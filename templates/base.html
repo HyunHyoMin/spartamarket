@@ -55,6 +55,7 @@
                     {% csrf_token %}
                     <a href="{% url 'accounts:login' %}"><button class="btn btn-outline-success" type="submit">로그아웃</button></a>
                 </form>
+                <a href="{% url 'accounts:profile' request.user.id %}"><button class="btn btn-outline-success" type="submit">프로필</button></a>
                 {% else %}
                 
                     <a href="{% url 'accounts:login' %}"><button class="btn btn-outline-success" type="submit">로그인</button></a>
