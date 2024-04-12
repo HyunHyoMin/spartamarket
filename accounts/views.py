@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from .models import Users
+from .models import User
 from django.views.decorators.http import require_POST, require_http_methods
 
 @require_http_methods(["GET", "POST"])
@@ -10,7 +10,7 @@ def signup(request):
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
         if password == confirm_password:
-            user = Users.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password)
             auth_login(request, user)
         return render(request, "accounts/signup.html")
     return render(request, "accounts/signup.html")
@@ -45,6 +45,6 @@ def logout(request):
 
 @require_http_methods(["GET"])
 def profile(request, pk):
-    user = get_object_or_404(Users, pk=pk)
+    user = get_object_or_404(User, pk=pk)
     context = {'user':user}
     return render(request, "accounts/profile.html", context)
