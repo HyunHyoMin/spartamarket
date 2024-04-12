@@ -1,3 +1,50 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from .models import Users
+from django.views.decorators.http import require_POST, require_http_methods
 
-# Create your views here.
+@require_http_methods(["GET", "POST"])
+def signup(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        confirm_password = request.POST["confirm_password"]
+        if password == confirm_password:
+            user = Users.objects.create_user(username=username, password=password)
+            auth_login(request, user)
+        return render(request, "accounts/signup.html")
+    return render(request, "accounts/signup.html")
+
+
+@require_POST
+def delete(request):
+    if request.user.is_authenticated:
+        request.user.delete()
+        auth_logout(request)
+    return redirect('accounts:login')
+
+
+@require_http_methods(["GET", "POST"])
+def login(request):
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            auth_login(request, user)
+        return render(request, "accounts/login.html")
+    return render(request, "accounts/login.html")
+
+
+@require_POST
+def logout(request):
+    if request.user.is_authenticated:
+        auth_logout(request)
+    return redirect('accounts:login')
+
+
+@require_http_methods(["GET"])
+def profile(request, pk):
+    user = get_object_or_404(Users, pk=pk)
+    context = {'user':user}
+    return render(request, "accounts/profile.html", context)
