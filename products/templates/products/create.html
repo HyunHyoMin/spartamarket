@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h1>Create</h1>
+<form action="{% url 'products:create' %}" method="POST">
+    {% csrf_token %}
+        <input type="text" name="title" value="제목"></input>
+        <input type="content" name="content" value="내용"></input>
+        <button type="submit">저장</button>
+</form>
+
+{% endblock content %}
+
+
