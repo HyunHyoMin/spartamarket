@@ -4,7 +4,6 @@
 {% block content %}
 
 
-<a href="{% url 'products:create' %}">Create_Product</a>
 
 <div class="album py-5 bg-light">
     <div class="container">
@@ -12,25 +11,54 @@
             {% for product in products %}
             <div class="col">
                 <div class="card shadow-sm">
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                        xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                        preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
-                            dy=".3em">이미지 추가 예정</text>
-                    </svg>
+                    <a href="{% url 'products:detail' product.id %}">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef"
+                                dy=".3em">이미지 추가 예정</text>
+                        </svg>
 
-                    <div class="card-body">
-                        <p class="card-text">{{ product.title }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="card-body">
+                            <p class="card-text">{{ product.title }}</p>
+                            <div class="d-flex justify-content-between align-items-center">
 
-                            <small class="text-muted">{{ product.created_at }}</small>
+                                <small class="text-muted">{{ product.created_at }}</small>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
             {% endfor %}
         </div>
+
+    </div>
+    <div>
+        <ul class="pagination pagination-lg">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">&laquo;</a>
+            </li>
+            <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">4</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">5</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">&raquo;</a>
+            </li>
+        </ul>
     </div>
 </div>
-{% endblock content %}
+
+    {% endblock content %}
