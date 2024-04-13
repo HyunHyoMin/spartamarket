@@ -12,7 +12,8 @@ def create(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
-        product = Product.objects.create(user=request.user, title=title, content=content)
+        image = request.FILES["image"]
+        product = Product.objects.create(user=request.user, title=title, content=content, image=image)
         return redirect("products:detail", product.pk)
     return render(request, "products/create.html",)
 
