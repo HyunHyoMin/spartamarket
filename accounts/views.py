@@ -21,7 +21,7 @@ def delete(request):
     if request.user.is_authenticated:
         request.user.delete()
         auth_logout(request)
-    return redirect('accounts:login')
+    return redirect('home')
 
 
 @require_http_methods(["GET", "POST"])
@@ -32,7 +32,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-        return render(request, "accounts/login.html")
+        return redirect("home")
     return render(request, "accounts/login.html")
 
 
@@ -40,7 +40,7 @@ def login(request):
 def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
-    return redirect('accounts:login')
+    return redirect('home')
 
 
 @require_http_methods(["GET"])

@@ -16,7 +16,11 @@
         <label for="exampleInputPassword1" class="form-label">비밀번호</label>
         <input type="password" name='password' class="form-control" id="exampleInputPassword1">
     </div>
+
     <button type="submit" class="btn btn-primary">로그인</button>
-</form>
+    </div>
+    </form>
+    <br>
     <a href="{% url 'accounts:signup' %}"><button class="btn btn-primary">회원가입</button></a>
+
 {% endblock content %}
