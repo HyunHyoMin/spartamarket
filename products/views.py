@@ -1,8 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from accounts.models import User
 from .models import Product, Comment
-from .forms import ProductForm, CommentForm
 from django.views.decorators.http import require_POST, require_http_methods
 
 
@@ -12,7 +9,8 @@ def create(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
-        product = Product.objects.create(user=request.user, title=title, content=content)
+        image = request.FILES["image"]
+        product = Product.objects.create(user=request.user, title=title, content=content, image=image)
         return redirect("products:detail", product.pk)
     return render(request, "products/create.html",)
 

@@ -7,12 +7,13 @@ from django.views.decorators.http import require_POST, require_http_methods
 def signup(request):
     if request.method == "POST":
         username = request.POST["username"]
+        nickname = request.POST["nickname"]
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
         if password == confirm_password:
-            user = User.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(username=username, nickname=nickname, password=password)
             auth_login(request, user)
-        return render(request, "accounts/signup.html")
+        return redirect("home")
     return render(request, "accounts/signup.html")
 
 
@@ -46,5 +47,15 @@ def logout(request):
 @require_http_methods(["GET"])
 def profile(request, pk):
     user = get_object_or_404(User, pk=pk)
-    context = {'user':user}
+    context = {
+        'user': user,
+    }
     return render(request, "accounts/profile.html", context)
+
+
+@require_POST
+def update_profile_image(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    user.image = request.FILES["image"]
+    user.save()
+    return redirect("accounts:profile", user.pk)
