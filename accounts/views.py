@@ -53,9 +53,14 @@ def profile(request, pk):
     return render(request, "accounts/profile.html", context)
 
 
-@require_POST
-def update_profile_image(request, pk):
+@require_http_methods(["GET", "POST"])
+def update_profile(request, pk):
     user = get_object_or_404(User, pk=pk)
-    user.image = request.FILES["image"]
-    user.save()
-    return redirect("accounts:profile", user.pk)
+    if request.method == "POST":
+        user.content = request.POST["content"]
+        if request.FILES:
+            user.image = request.FILES["image"]
+        user.save()
+        return redirect("accounts:profile", user.pk)
+    context ={'user' : user}
+    return render(request, "accounts/update_profile.html", context)
