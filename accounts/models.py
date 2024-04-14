@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.contrib.auth.hashers import make_password
+from django.core.files.storage import default_storage
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -37,3 +38,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
     objects = CustomUserManager()
+    
+    def delete(self, *args, **kwargs):
+        if self.image != 'images/default_user_image.png':
+            default_storage.delete(self.image.path)
+        super(User, self).delete(*args, **kwargs)
