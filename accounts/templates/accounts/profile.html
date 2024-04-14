@@ -1,14 +1,42 @@
 {% extends 'base.html' %}
-
+{% load static %}
 
 {% block content %}
 <br>
-<h3>{{ user.username }} 프로필</h3>
+<h3>{{ user.nickname }} 프로필</h3>
+<img src="{{ user.image.url }}" alt="profile_image" style="width:100px;">
+<form action="{% url 'accounts:update_profile_image' user.pk %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+<input type="file" name="image"><br>
+<button type="submit">저장</button>
+</form>
 <br>
 
+<hr>    
+<p>자기소개</p>
+<hr>
+<p><span id="{{ user.pk }}">{{ user.content }}</span> | 
+    <button onclick="update_profile_content({{ profile.pk }})">수정</button>
+</p>
 
+
+
+<hr>
 <form action="{% url 'accounts:delete' %}" method="POST">
     {% csrf_token %}
     <button type="submit">회원탈퇴</button>
 </form>
 {% endblock content %}
+
+<!-- <script>
+    function update_profile_content(profile_pk) {
+        var content = document.getElementById(profile_pk).innerText;
+        var update_profile_content = document.getElementById(profile_pk);
+        var url = '/profile/' + profile_pk + '/update_profile_content/';
+        update_profile_content.innerHTML = '<form action="' + url + '" method="POST">' +
+            '{% csrf_token %}' +
+            '<input type="text" name="content" value="' + content + '">' +
+            '<button type="submit">수정</button>' +
+            '</form>';
+    }
+</script> -->
