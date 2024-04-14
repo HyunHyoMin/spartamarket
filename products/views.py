@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Comment
 from django.views.decorators.http import require_POST, require_http_methods
-
+from django.core.files.storage import default_storage
 
 
 @require_http_methods(["GET", "POST"])
@@ -31,8 +31,10 @@ def update(request, pk):
     if request.method == "POST":
         product.title = request.POST["title"]
         product.content = request.POST["content"]
+        if "image" in request.FILES and product.image:
+            default_storage.delete(product.image.path)
+            product.image = request.FILES["image"]
         product.save()
-        context = {'product' : product}
         return redirect("products:detail", product.pk)
     context = {'product' : product}
     return render(request, "products/update.html", context)
