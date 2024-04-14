@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<p>프로필 사진</p>
+<img src="{{ user.image.url }}" alt="profile_image" style="width:100px;">
+
+<form action="{% url 'accounts:update_profile' user.pk %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+<input type="file" name="image"> 
+<hr>
+
+
+<p>자기소개</p>
+<textarea name="content">{{ user.content }}</textarea>
+
+<br>
+<button type="submit">수정</button>
+</form>
+
+
+{% endblock content %}
+
