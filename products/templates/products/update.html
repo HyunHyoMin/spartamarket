@@ -5,17 +5,7 @@
 
 <form action="{% url 'products:update' product.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <br>
-    <fieldset>
-        <div>
-            <input type="text" name="title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="제목" value="{{ product.title }}">
-        </div><br>
-        <div>
-            <textarea class="form-control" name="content" id="exampleTextarea" rows="3">{{ product.content }}</textarea>
-        </div><br>
-        <div>
-            <input class="form-control" name="image" type="file" id="formFile">
+    {{ form.as_p }}
         </div><br>
         <button type="submit" class="btn btn-dark">작성</button>
 </form>

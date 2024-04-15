@@ -3,18 +3,22 @@ from .models import Product, Comment
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
-
+from .forms import ProductForm, CommentForm
 
 @login_required
 @require_http_methods(["GET", "POST"])
 def create(request):
     if request.method == "POST":
-        title = request.POST["title"]
-        content = request.POST["content"]
-        image = request.FILES.get("image")
-        product = Product.objects.create(user=request.user, title=title, content=content, image=image)
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            product = form.save(False)
+            product.user = request.user
+            product.save()
         return redirect("products:detail", product.pk)
-    return render(request, "products/create.html",)
+    else:
+        form = ProductForm
+    context = {'form' : form}
+    return render(request, "products/create.html", context)
 
 
 @require_http_methods(["GET", "POST"])
@@ -27,26 +31,34 @@ def detail(request, pk):
     }
     return render(request, "products/detail.html", context)
 
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    if request.method == "POST":
-        product.title = request.POST["title"]
-        product.content = request.POST["content"]
-        if "image" in request.FILES and product.image:
-            default_storage.delete(product.image.path)
-            product.image = request.FILES["image"]
-        product.save()
-        return redirect("products:detail", product.pk)
-    context = {'product' : product}
+    if product.user == request.user:
+        if request.method == "POST":
+            form = ProductForm(request.POST, request.FILES, instance=product)
+            if form.is_valid():
+                product = form.save()
+            return redirect("products:detail", product.pk)
+        else:
+            form = ProductForm(instance=product)
+        context = {
+            'form' : form,
+            'product' : product
+            }
+    else:
+        return redirect('home')
     return render(request, "products/update.html", context)
+
 
 @login_required
 @require_POST
 def delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    product.delete()
+    if product.user == request.user:
+        product.delete()
     return redirect('home')
 
 
@@ -59,20 +71,24 @@ def create_comment(request, pk):
     comment.save()
     return redirect("products:detail", product.pk)
 
+
 @login_required
 @require_POST
 def delete_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     product = comment.product
-    comment.delete()
+    if comment.user == request.user:
+        comment.delete()
     return redirect("products:detail", product.pk)
+
 
 @login_required
 @require_POST
 def update_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     product = comment.product
-    comment.content = request.POST["content"]
+    if comment.user == request.user:
+        comment.content = request.POST["content"]
     comment.save()
     return redirect('products:detail', product.pk)
 

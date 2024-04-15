@@ -1,7 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from django.contrib.auth.hashers import make_password
 from django.core.files.storage import default_storage
+
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
@@ -29,12 +31,24 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=20, unique=True)
+    # username_validator = UnicodeUsernameValidator()
+    
+    username = models.CharField(
+        ("username"),
+        max_length=20,
+        unique=True,
+        # validators=[username_validator],
+        error_messages={
+            "unique": ("A user with that username already exists."),
+        },
+    )
     nickname = models.CharField(max_length=20, unique=True)
     content = models.CharField(max_length=200, default="자기소개가 아직 없습니다.")
+    followings = models.ManyToManyField('self', symmetrical=False, related_name='followers')
     image = models.ImageField(upload_to="images/", blank=True, default='images/default_user_image.png')
     date_joined = models.DateTimeField(auto_now_add=True)
     is_staff = models.BooleanField(default=False)
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
     objects = CustomUserManager()
