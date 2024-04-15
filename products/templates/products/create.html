@@ -5,18 +5,7 @@
 
 <form action="{% url 'products:create' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <br>
-    <fieldset>
-        <div>
-            <input type="text" name="title" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="제목">
-        </div><br>
-        <div>
-            <textarea class="form-control" name="content" id="exampleTextarea" placeholder="내용" rows="3"></textarea>
-        </div><br>
-        <div>
-            <input class="form-control" name="image" type="file" id="formFile">
-        </div><br>
+    {{ form.as_p }}
         <button type="submit" class="btn btn-dark">작성</button>
 </form>
 {% endblock content %}

@@ -1,22 +1,21 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from .models import User
+from django.shortcuts import render, redirect
+from django.contrib.auth import login as auth_login, logout as auth_logout
+from .forms import CustomUserCreationForm, LoginForm
 from django.views.decorators.http import require_POST, require_http_methods
 
 
 @require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        nickname = request.POST["nickname"]
-        password = request.POST["password"]
-        confirm_password = request.POST["confirm_password"]
-        if password == confirm_password:
-            user = User.objects.create_user(
-                username=username, nickname=nickname, password=password)
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
             auth_login(request, user)
         return redirect("home")
-    return render(request, "accounts/signup.html")
+    else:
+        form = CustomUserCreationForm()
+    context = {'form': form}
+    return render(request, "accounts/signup.html", context)
 
 
 @require_POST
@@ -30,13 +29,15 @@ def delete(request):
 @require_http_methods(["GET", "POST"])
 def login(request):
     if request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return redirect("home")
-    return render(request, "accounts/login.html")
+        form = LoginForm(data=request.POST)
+        if form.is_valid():
+            auth_login(request, form.get_user())
+            next_url = request.GET.get("next") or "home"
+            return redirect(next_url)
+    else:
+        form = LoginForm()
+    context = {'form': form}
+    return render(request, "accounts/login.html", context)
 
 
 @require_POST
@@ -44,25 +45,3 @@ def logout(request):
     if request.user.is_authenticated:
         auth_logout(request)
     return redirect('home')
-
-
-@require_http_methods(["GET"])
-def profile(request, pk):
-    user = get_object_or_404(User, pk=pk)
-    context = {
-        'user': user,
-    }
-    return render(request, "accounts/profile.html", context)
-
-
-@require_http_methods(["GET", "POST"])
-def update_profile(request, pk):
-    user = get_object_or_404(User, pk=pk)
-    if request.method == "POST":
-        user.content = request.POST["content"]
-        if request.FILES:
-            user.image = request.FILES["image"]
-        user.save()
-        return redirect("accounts:profile", user.pk)
-    context ={'user' : user}
-    return render(request, "accounts/update_profile.html", context)

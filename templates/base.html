@@ -32,7 +32,7 @@
                                 메뉴
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{% url 'accounts:profile' request.user.id %}">프로필</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:profile' request.user.username %}">프로필</a></li>
                                 <li><a class="dropdown-item" href="#">내 등록 상품</a></li>
 
                             </ul>
@@ -59,53 +59,9 @@
                     {% else %}
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal"
-                        data-bs-target="#staticBackdrop">
+                    <a href="{% url 'accounts:login' %}"><button type="button" class="btn btn-outline-success">
                         로그인
-                    </button>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                        tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-
-
-                                <div class="modal-body">
-                                    <form action="{% url 'accounts:login' %}" method="POST">
-                                        {% csrf_token %}
-                                        <div class="mb-3">
-                                            <div id="username" class="form-text">
-                                            <label for="username" class="form-label"> ID </label>
-                                            </div>
-                                            <input type="text" name="username" class="form-control" id="username">
-                                            
-                                        </div>
-                                        <div class="mb-3">
-                                            <div id="password" class="form-text">
-                                            <label for="password" class="form-label">Password</label>
-                                            </div>
-                                            <input type="password" name="password" class="form-control" id="password">
-                                            
-                                        </div>
-                                    
-                                </div>
-    
-                                <div class="modal-footer">
-                                    <a href="{% url 'accounts:signup' %}"><button type="button" class="btn btn-outline-success"
-                                        data-bs-dismiss="modal" >회원가입</button></a>
-                                    <button type="submit" class="btn btn-outline-success"
-                                        data-bs-dismiss="modal" >로그인</button>
-                                </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                    </button></a>
                     {% endif %}
 
                 </div>

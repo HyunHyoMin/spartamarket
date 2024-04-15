@@ -12,13 +12,19 @@
 <p>자기소개</p>
 <hr>
 <p>{{ user.content }}</p>
-
-
+<hr>
+<ol> 찜한상품
+{% for product in products %}
+    <li><a href="{% url 'products:detail' product.pk %}">{{product.title }}</a></li>
+{% endfor %}
+</ol>  
 
 <hr>
-<a href="{% url 'accounts:update_profile' user.pk %}"><button>수정</button></a>
+{% if user == request.user %}
+<a href="{% url 'users:update_profile' user.username %}"><button>수정</button></a>
 <form action="{% url 'accounts:delete' %}" method="POST">
     {% csrf_token %}
     <button type="submit">회원탈퇴</button>
 </form>
+{% endif %}
 {% endblock content %}

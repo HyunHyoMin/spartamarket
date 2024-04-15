@@ -14,7 +14,7 @@
 
     <div class="row g-5">
         <div class="col-md-8">
-            <p class="blog-post-meta">{{ product.user.nickname }} | {{ product.created_at }}</p>
+            <p class="blog-post-meta"><a href="{% url 'users:profile' product.user.username %}">{{ product.user.nickname }}</a> | {{ product.created_at }}</p>
 
             <h2 class="display-5 link-body-emphasis mb-1"> {{ product.title }} </h2>
 
@@ -27,13 +27,16 @@
             </p>
 
             <p>{{ product.content }}</p>
+            
 
+            {% if product.user == request.user %}
             <p><a href="{% url 'products:update' product.pk %}"><button>수정</button></a>
 
             <form action="{% url 'products:delete' product.pk %}" method="POST">
                 {% csrf_token %}
                 <button type="submit">삭제</button>
             </form>
+            {% endif %}
 
             <form action="{% url 'products:like' product.pk %}" method="POST">
                 {% csrf_token %}
@@ -56,13 +59,15 @@
                 {% for comment in comments %}
                 <li>
                     <span id="{{ comment.pk }}">{{ comment.content }}</span>
-                    | {{ comment.user }} | {{comment.updated_at }} |
+                    | {{ comment.user }} | {{comment.updated_at }}
+                    {% if comment.user == request.user %}
                     <button onclick="update_comment({{ comment.pk }})">수정</button> |
                     <form action="{% url 'products:delete_comment' comment.pk %}" method="POST"
                         style="display: inline;">
                         {% csrf_token %}
                         <button type="submit">삭제</button>
                     </form>
+                    {% endif %}
                 </li>
                 {% endfor %}
             </ol>
