@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from django.core.files.storage import default_storage
 
 class Product(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -9,8 +10,15 @@ class Product(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(upload_to="images/", blank=True)
 
+    like_users = models.ManyToManyField(User, related_name="like_articles")
+
     def __str__(self):
         return self.title
+    
+    def delete(self):
+        if self.image:
+            default_storage.delete(self.image.path)
+        super(Product, self).delete(using=None, keep_parents=False)
 
 
 class Comment(models.Model):
@@ -22,11 +30,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.content
-
-
-class MarkedProduct(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.user.username} - {self.product.title}"

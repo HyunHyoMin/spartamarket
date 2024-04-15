@@ -1,15 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Comment
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
 
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def create(request):
     if request.method == "POST":
         title = request.POST["title"]
         content = request.POST["content"]
-        image = request.FILES["image"]
+        image = request.FILES.get("image")
         product = Product.objects.create(user=request.user, title=title, content=content, image=image)
         return redirect("products:detail", product.pk)
     return render(request, "products/create.html",)
@@ -25,6 +27,7 @@ def detail(request, pk):
     }
     return render(request, "products/detail.html", context)
 
+@login_required
 @require_http_methods(["GET", "POST"])
 def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -39,7 +42,7 @@ def update(request, pk):
     context = {'product' : product}
     return render(request, "products/update.html", context)
 
-
+@login_required
 @require_POST
 def delete(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -47,7 +50,7 @@ def delete(request, pk):
     return redirect('home')
 
 
-
+@login_required
 @require_POST
 def create_comment(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -56,6 +59,7 @@ def create_comment(request, pk):
     comment.save()
     return redirect("products:detail", product.pk)
 
+@login_required
 @require_POST
 def delete_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
@@ -63,6 +67,7 @@ def delete_comment(request, pk):
     comment.delete()
     return redirect("products:detail", product.pk)
 
+@login_required
 @require_POST
 def update_comment(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
@@ -70,3 +75,15 @@ def update_comment(request, pk):
     comment.content = request.POST["content"]
     comment.save()
     return redirect('products:detail', product.pk)
+
+
+@require_POST
+def like(request, pk):
+    if request.user.is_authenticated:
+        product = get_object_or_404(Product, pk=pk)
+        if product.like_users.filter(pk=request.user.pk).exists():
+            product.like_users.remove(request.user)
+        else:
+            product.like_users.add(request.user)
+        return redirect('products:detail', product.pk)
+    return redirect('accounts:login')

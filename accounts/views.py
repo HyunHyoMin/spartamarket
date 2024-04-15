@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from .models import User
 from django.views.decorators.http import require_POST, require_http_methods
 
+
 @require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == "POST":
@@ -11,7 +12,8 @@ def signup(request):
         password = request.POST["password"]
         confirm_password = request.POST["confirm_password"]
         if password == confirm_password:
-            user = User.objects.create_user(username=username, nickname=nickname, password=password)
+            user = User.objects.create_user(
+                username=username, nickname=nickname, password=password)
             auth_login(request, user)
         return redirect("home")
     return render(request, "accounts/signup.html")
@@ -28,12 +30,12 @@ def delete(request):
 @require_http_methods(["GET", "POST"])
 def login(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             auth_login(request, user)
-        return redirect("home")
+            return redirect("home")
     return render(request, "accounts/login.html")
 
 
