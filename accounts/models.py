@@ -38,8 +38,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['nickname']
     objects = CustomUserManager()
-    
-    def delete(self, *args, **kwargs):
+
+    def delete(self):
         if self.image != 'images/default_user_image.png':
             default_storage.delete(self.image.path)
-        super(User, self).delete(*args, **kwargs)
+        super(User, self).delete(using=None, keep_parents=False)
