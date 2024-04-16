@@ -7,8 +7,8 @@
 <img src="{{ member.image.url }}" alt="profile_image" style="width:100px;">
 
 <p>
-        팔로잉 : {{ member.followings.count }}
-        팔로워 : {{ member.followers.count }}
+        <a href="{% url 'users:following' member.username %}">팔로잉 : {{ member.followings.count }}</a>
+        <a href="{% url 'users:follower' member.username %}">팔로워 : {{ member.followers.count }}</a>
 </p>
 
 <div>
