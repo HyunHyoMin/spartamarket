@@ -3,7 +3,7 @@ from .models import Product, Comment
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
-from .forms import ProductForm, CommentForm
+from .forms import ProductForm
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -11,9 +11,7 @@ def create(request):
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
-            product = form.save(False)
-            product.user = request.user
-            product.save()
+            product = form.save(request.user)
         return redirect("products:detail", product.pk)
     else:
         form = ProductForm
@@ -38,9 +36,11 @@ def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if product.user == request.user:
         if request.method == "POST":
+            if "image" in request.FILES and product.image:
+                default_storage.delete(product.image.path)
             form = ProductForm(request.POST, request.FILES, instance=product)
             if form.is_valid():
-                product = form.save()
+                product = form.save(request.user)
             return redirect("products:detail", product.pk)
         else:
             form = ProductForm(instance=product)

@@ -31,13 +31,13 @@ class CustomUserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin):
-    # username_validator = UnicodeUsernameValidator()
+    username_validator = UnicodeUsernameValidator()
     
     username = models.CharField(
         ("username"),
         max_length=20,
         unique=True,
-        # validators=[username_validator],
+        validators=[username_validator],
         error_messages={
             "unique": ("A user with that username already exists."),
         },

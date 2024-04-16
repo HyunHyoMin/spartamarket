@@ -1,11 +1,20 @@
 {% extends 'base.html' %}
 
+<head>
+    {% load static %}
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    {% endblock head %}
+    </head>
 
 {% block content %}
-
+<br>
+<div class="mb-3 select">
+    <h3>상품 등록</h3>
 <form action="{% url 'products:create' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
         <button type="submit" class="btn btn-dark">작성</button>
 </form>
+</div>
 {% endblock content %}

@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
+<head>
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock head %}
+</head>
 
 {% block content %}
 <br>
-<h3>로그인</h3>
-<br>
-<div class="mb-3">
-<form action="" method="POST" class="form-label">
+<div class="mb-3 select">
+    <h3>로그인</h3>
+<form action="" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">로그인</button>
     </form>
     <br>
-    <a href="{% url 'accounts:signup' %}"><button class="btn btn-primary">회원가입</button></a>
+    <a href="{% url 'accounts:signup' %}" class="signup-btn"><button class="btn btn-primary">회원가입</button></a>
 </div>
 {% endblock content %}

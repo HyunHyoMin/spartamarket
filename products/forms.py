@@ -13,6 +13,11 @@ class ProductForm(forms.ModelForm):
             'image' : '상품 이미지'
         }
         
+    def save(self, user):
+        instance = super().save(commit=False)
+        instance.user = user
+        instance.save()
+        return instance
 
 class CommentForm(forms.ModelForm):
 

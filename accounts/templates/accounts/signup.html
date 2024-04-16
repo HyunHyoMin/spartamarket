@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
-
+<head>
+    {% load static %}
+    {% block head %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    {% endblock head %}
+    </head>
 
 {% block content %}
 <br>
-<h3>회원가입</h3>
+
 <br>
 
-<div class="mb-3">
+<div class="mb-3 select">
+    <h3>회원가입</h3>
 <form action="{% url 'accounts:signup' %}" method="POST" class="form-label">
     {% csrf_token %}
     {{ form.as_p }}

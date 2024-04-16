@@ -6,4 +6,5 @@ app_name = 'users'
 urlpatterns = [
     path('profile/<str:username>/', views.profile, name='profile'),
     path('update_profile/<str:username>', views.update_profile, name='update_profile'),
+    path('<int:member_pk>/follow', views.follow, name="follow"),
 ]
