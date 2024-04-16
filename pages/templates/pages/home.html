@@ -4,11 +4,10 @@
 {% block content %}
 
 
-
 <div class="album py-5 bg-light">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for product in products %}
+            {% for product in product_list %}
             <div class="col">
                 <div class="card shadow-sm">
                     <a href="{% url 'products:detail' product.id %}">
@@ -31,31 +30,41 @@
         </div>
 
     </div>
-    <div>
         <ul class="pagination pagination-lg">
+            {% if product_list.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ product_list.previous_page_number }}">&laquo;</a>
+            </li>
+            {% else %}
             <li class="page-item disabled">
                 <a class="page-link" href="#">&laquo;</a>
             </li>
+            {% endif %}
+
+            
+            {% for page_number in product_list.paginator.page_range %}
+            {% if page_number == product_list.number %}
             <li class="page-item active">
-                <a class="page-link" href="#">1</a>
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
             </li>
+            {% else %}
             <li class="page-item">
-                <a class="page-link" href="#">2</a>
+                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
             </li>
+            {% endif %}
+            {% endfor %}
+
+
+            {% if product_list.has_next %}
             <li class="page-item">
-                <a class="page-link" href="#">3</a>
+                <a class="page-link" href="?page={{ product_list.next_page_number }}">&raquo;</a>
             </li>
-            <li class="page-item">
-                <a class="page-link" href="#">4</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="#">5</a>
-            </li>
-            <li class="page-item">
+            {% else %}
+            <li class="page-item disabled">
                 <a class="page-link" href="#">&raquo;</a>
             </li>
+            {% endif %}
         </ul>
-    </div>
 </div>
 
     {% endblock content %}
