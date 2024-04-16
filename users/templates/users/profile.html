@@ -6,6 +6,11 @@
 <h3>{{ member.nickname }} 프로필</h3>
 <img src="{{ member.image.url }}" alt="profile_image" style="width:100px;">
 
+<p>
+        팔로잉 : {{ member.followings.count }}
+        팔로워 : {{ member.followers.count }}
+</p>
+
 <div>
 {% if request.user != member %}
 <form action="{% url 'users:follow' member.pk %}" method="POST">

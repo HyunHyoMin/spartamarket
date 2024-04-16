@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
 from .forms import ProfileForm
@@ -14,7 +13,7 @@ def profile(request, username):
     products = user.like_products.all()
     context = {
         'member': user,
-        'products':products
+        'products': products,
     }
     return render(request, "users/profile.html", context)
 
