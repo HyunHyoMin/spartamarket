@@ -2,22 +2,15 @@
 
 {% block content %}
 
-<p>프로필 사진</p>
+<br>
 <img src="{{ user.image.url }}" alt="profile_image" style="width:100px;">
 
 <form action="{% url 'users:update_profile' user.username %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-<input type="file" name="image"> 
+    {{ form.as_p }}
 <hr>
-
-
-<p>자기소개</p>
-<textarea name="content">{{ user.content }}</textarea>
-
-<br>
 <button type="submit">수정</button>
 </form>
 
 
 {% endblock content %}
-

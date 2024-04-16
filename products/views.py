@@ -36,9 +36,11 @@ def update(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if product.user == request.user:
         if request.method == "POST":
+            if "image" in request.FILES and product.image:
+                default_storage.delete(product.image.path)
             form = ProductForm(request.POST, request.FILES, instance=product)
             if form.is_valid():
-                product = form.save()
+                product = form.save(request.user)
             return redirect("products:detail", product.pk)
         else:
             form = ProductForm(instance=product)
