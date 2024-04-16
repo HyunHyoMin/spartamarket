@@ -6,7 +6,6 @@ from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
 
 
-@login_required
 @require_http_methods(["GET"])
 def profile(request, username):
     user = get_object_or_404(User, username=username)
@@ -48,3 +47,17 @@ def follow(request, member_pk):
         else:
             member.followers.add(request.user)
     return redirect("users:profile", username=member.username)
+
+
+@require_http_methods(["GET"])
+def follower(request, member_username):
+    member = get_object_or_404(User, username=member_username)
+    context = {'member' : member}
+    return render(request, "users/follower.html", context)
+
+
+@require_http_methods(["GET"])
+def following(request, member_username):
+    member = get_object_or_404(User, username=member_username)
+    context = {'member' : member}
+    return render(request, "users/following.html", context)
