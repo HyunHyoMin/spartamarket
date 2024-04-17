@@ -12,10 +12,9 @@
 </p>
 
 <div>
-{% if request.user != member %}
+{% if request.user != member and request.user.is_authenticated %}
 <form action="{% url 'users:follow' member.pk %}" method="POST">
     {% csrf_token %}
-
     {% if request.user in member.followers.all %}
         <button type="submit">언팔로우</button>
     {% else %}
@@ -23,6 +22,7 @@
     {% endif %}
 </form>
 {% endif %}
+
 </div>
 <br>  
 <hr>
