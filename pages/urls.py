@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from accounts import views
+from . import views
 
 app_name = 'pages'
 urlpatterns = [
-    # path('signup/', views.signup, name='signup'),
+    path('search/', views.search, name='search'),
 ]
