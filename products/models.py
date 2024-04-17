@@ -9,7 +9,14 @@ class CommonInfo(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         abstract = True
-        
+
+
+class Hashtag(models.Model):
+    tag = models.CharField(max_length=30, unique=True)
+
+    def __str__(self):
+        return self.tag
+
 
 class Product(CommonInfo):
     title = models.CharField(max_length=50)
@@ -17,6 +24,7 @@ class Product(CommonInfo):
     image = models.ImageField(upload_to="images/", blank=True)
     views = models.IntegerField(default=0)
     like_users = models.ManyToManyField(User, related_name="like_products")
+    tags = models.ManyToManyField(Hashtag, blank=True)
 
     def __str__(self):
         return self.title
@@ -33,3 +41,5 @@ class Comment(CommonInfo):
 
     def __str__(self):
         return self.content
+
+
