@@ -5,6 +5,7 @@ from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
 from .forms import ProductForm
 
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def create(request):
@@ -22,6 +23,8 @@ def create(request):
 @require_http_methods(["GET", "POST"])
 def detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    product.views += 1
+    product.save()
     comments = product.comment_set.all().order_by("-pk")
     context = {
         'product' : product,
