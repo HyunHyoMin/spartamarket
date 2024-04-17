@@ -29,21 +29,57 @@
             </div>
             {% endfor %}
         </div>
-
     </div>
-        <ul class="pagination pagination-lg">
-            {% if product_list.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ product_list.previous_page_number }}">&laquo;</a>
+
+
+    <div class="container">
+    <ul class="pagination pagination-lg">
+        {% if request.GET.search %}
+        {% if product_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ product_list.previous_page_number }}&search={{ request.GET.search }}">&laquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo;</a>
+        </li>
+        {% endif %}
+        
+        {% for page_number in product_list.paginator.page_range %}
+            {% if page_number == product_list.number %}
+            <li class="page-item active">
+                <a class="page-link" href="?page={{ page_number }}&search={{ request.GET.search }}">{{ page_number }}</a>
             </li>
             {% else %}
-            <li class="page-item disabled">
-                <a class="page-link" href="#">&laquo;</a>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_number }}&search={{ request.GET.search }}">{{ page_number }}</a>
             </li>
             {% endif %}
+        {% endfor %}
+    
+        {% if product_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ product_list.next_page_number }}&search={{ request.GET.search }}">&raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&raquo;</a>
+        </li>
+        {% endif %}
 
-            
-            {% for page_number in product_list.paginator.page_range %}
+
+        {% else %}
+        {% if product_list.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ product_list.previous_page_number }}">&laquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo;</a>
+        </li>
+        {% endif %}
+        
+        {% for page_number in product_list.paginator.page_range %}
             {% if page_number == product_list.number %}
             <li class="page-item active">
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
@@ -53,19 +89,19 @@
                 <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
             </li>
             {% endif %}
-            {% endfor %}
+        {% endfor %}
 
-
-            {% if product_list.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ product_list.next_page_number }}">&raquo;</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-                <a class="page-link" href="#">&raquo;</a>
-            </li>
-            {% endif %}
-        </ul>
+        {% if product_list.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ product_list.next_page_number }}">&raquo;</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&raquo;</a>
+        </li>
+        {% endif %}
+        {% endif %}
+    </ul>
 </div>
 
     {% endblock content %}
