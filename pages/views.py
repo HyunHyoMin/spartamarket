@@ -16,7 +16,8 @@ def home(request):
     paginator = Paginator(products, 6)
     page_obj = paginator.get_page(page)
     context = {
-        'products': page_obj,
+        'products': page_obj,   
+        'page' : page   # 정렬 옵션을 선택해도 현재 페이지를 유지하기 위해
         }
     return render(request, 'pages/home.html', context)
 
@@ -39,5 +40,7 @@ def search(request):
         return home(request)
     paginator = Paginator(products, 6)
     page_obj = paginator.get_page(page)
-    context = {'products': page_obj}
+    context = {
+        'products': page_obj
+        }
     return render(request, 'pages/home.html', context)
