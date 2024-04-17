@@ -15,6 +15,7 @@ class Product(CommonInfo):
     title = models.CharField(max_length=50)
     content = models.TextField()
     image = models.ImageField(upload_to="images/", blank=True)
+    views = models.IntegerField(default=0)
     like_users = models.ManyToManyField(User, related_name="like_products")
 
     def __str__(self):

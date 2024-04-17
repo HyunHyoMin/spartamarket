@@ -1,29 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock head%}
 
 {% block content %}
-
-
 <div class="album py-5 bg-light">
     <div class="container">
-
-
         <div class="btn-group">
-            <form action="#">
             <button type="submit" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 정렬
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">조회수</a></li>
-                <li><a class="dropdown-item" href="#">좋아요</a></li>
+                <li><a class="dropdown-item" href="?page={{ page }}&search={{ request.GET.search }}&sort=views">조회수</a></li>
+                <li><a class="dropdown-item" href="?page={{ page }}&search={{ request.GET.search }}&sort=likes">좋아요</a></li>
             </ul>
-            </form>
         </div>
-
-
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            {% for product in product_list %}
+            {% for product in products %}
             <div class="col">
                 <div class="card shadow-sm">
                     <a href="{% url 'products:detail' product.id %}">
@@ -33,8 +29,11 @@
                         {% endif %}
 
                         <div class="card-body">
-                            <p class="card-text">{{ product.title }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
+                            <p class="card-text">{{ product.title }}
+                                <small class="text-muted right">조회수:{{ product.views }} 
+                                    | 좋아요:{{product.like_users.count }}</small>
+                            </p>
+                            <div class="d-flex justify-body-between align-items-center">
 
                                 <small class="text-muted">{{ product.created_at }}</small>
                                 <small class="text-muted">{{ product.user.nickname }}</small>
@@ -50,11 +49,10 @@
 
     <div class="container">
         <ul class="pagination pagination-lg">
-            {% if request.GET.search %}
-            {% if product_list.has_previous %}
+            {% if products.has_previous %}
             <li class="page-item">
                 <a class="page-link"
-                    href="?page={{ product_list.previous_page_number }}&search={{ request.GET.search }}">&laquo;</a>
+                    href="?page={{ products.previous_page_number }}&search={{ request.GET.search }}&sort={{ request.GET.sort }}">&laquo;</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -62,22 +60,22 @@
             </li>
             {% endif %}
 
-            {% for page_number in product_list.paginator.page_range %}
-            {% if page_number == product_list.number %}
+            {% for page_number in products.paginator.page_range %}
+            {% if page_number == products.number %}
             <li class="page-item active">
-                <a class="page-link" href="?page={{ page_number }}&search={{ request.GET.search }}">{{ page_number }}</a>
+                <a class="page-link" href="?page={{ page_number }}&search={{ request.GET.search }}&sort={{ request.GET.sort }}">{{ page_number}}</a>
             </li>
             {% else %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ page_number }}&search={{ request.GET.search }}">{{ page_number }}</a>
+                <a class="page-link" href="?page={{ page_number }}&search={{ request.GET.search }}&sort={{ request.GET.sort }}">{{ page_number}}</a>
             </li>
             {% endif %}
             {% endfor %}
 
-            {% if product_list.has_next %}
+            {% if products.has_next %}
             <li class="page-item">
                 <a class="page-link"
-                    href="?page={{ product_list.next_page_number }}&search={{ request.GET.search }}">&raquo;</a>
+                    href="?page={{ products.next_page_number }}&search={{ request.GET.search }}&sort={{ request.GET.sort }}">&raquo;</a>
             </li>
             {% else %}
             <li class="page-item disabled">
@@ -86,40 +84,15 @@
             {% endif %}
 
 
-            {% else %}
-            {% if product_list.has_previous %}
+            {% if products.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?page={{ product_list.previous_page_number }}">&laquo;</a>
+                <a class="page-link" href="?page={{ products.previous_page_number }}&sort={{ request.GET.sort }}">&laquo;</a>
             </li>
             {% else %}
             <li class="page-item disabled">
                 <a class="page-link" href="#">&laquo;</a>
             </li>
-            {% endif %}
-
-            {% for page_number in product_list.paginator.page_range %}
-            {% if page_number == product_list.number %}
-            <li class="page-item active">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-            {% else %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a>
-            </li>
-            {% endif %}
-            {% endfor %}
-
-            {% if product_list.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ product_list.next_page_number }}">&raquo;</a>
-            </li>
-            {% else %}
-            <li class="page-item disabled">
-                <a class="page-link" href="#">&raquo;</a>
-            </li>
-            {% endif %}
             {% endif %}
         </ul>
     </div>
-
     {% endblock content %}
