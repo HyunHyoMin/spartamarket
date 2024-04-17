@@ -36,16 +36,17 @@ def update_profile(request, username):
         }
     return render(request, "users/update_profile.html", context)
 
-
-@login_required
 @require_POST
 def follow(request, member_pk):
-    member = get_object_or_404(User, pk=member_pk)
-    if member != request.user:
-        if member.followers.filter(pk=request.user.pk).exists():
-            member.followers.remove(request.user)
-        else:
-            member.followers.add(request.user)
+    if request.user.is_authenticated:
+        member = get_object_or_404(User, pk=member_pk)
+        if member != request.user:
+            if member.followers.filter(pk=request.user.pk).exists():
+                member.followers.remove(request.user)
+            else:
+                member.followers.add(request.user)
+    else:
+        member = get_object_or_404(User, pk=member_pk)
     return redirect("users:profile", username=member.username)
 
 

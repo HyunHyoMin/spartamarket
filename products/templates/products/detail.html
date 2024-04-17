@@ -59,7 +59,7 @@
                 {% for comment in comments %}
                 <li>
                     <span id="{{ comment.pk }}">{{ comment.content }}</span>
-                    | {{ comment.user }} | {{comment.updated_at }}
+                    | {{ comment.user.nickname }} | {{comment.updated_at }}
                     {% if comment.user == request.user %}
                     <button onclick="update_comment({{ comment.pk }})">수정</button> |
                     <form action="{% url 'products:delete_comment' comment.pk %}" method="POST"
