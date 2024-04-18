@@ -3,10 +3,12 @@
 
 
 ## 🖥️ 프로젝트 소개
-게시글과 댓글 CRUD를 구현한 홈페이지입니다.
+유저들간 물품을 등록하고 마음에 드는 물품을 '좋아요'를 눌러 등록하고 '좋아요'목록을 확인하고,
+유저들간 팔로우 기능이 있는 마켓 사이트입니다.
 
 ERD : 
-[SpartaMarket_ERD.pdf](https://github.com/HyunHyoMin/spartamarket/files/14975149/SpartaMarket_ERD.pdf)
+[SpartaMarket_ERD.pdf](https://github.com/HyunHyoMin/spartamarket/files/15020078/SpartaMarket_ERD.pdf)
+
 
 
 ## 🕰️ 개발 기간
