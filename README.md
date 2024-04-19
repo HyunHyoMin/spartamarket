@@ -47,7 +47,7 @@ https://www.figma.com/file/f9G4a2rXgttRbnq2xlfm33/spartamarket?type=whiteboard&n
 #### 메인 페이지
  - 조회수, 좋아요 순으로 정렬 기능
  - 검색 기능 / 제목, 닉네임, 내용 중 하나라도 포함되는 내용이 있다면 검색 됨
- - 검색 후 정렬도 가능
+ - 검색 후 정렬 가능
 
 #### 게시글
 - 글 작성, 읽기, 수정, 삭제(CRUD)
@@ -56,6 +56,7 @@ https://www.figma.com/file/f9G4a2rXgttRbnq2xlfm33/spartamarket?type=whiteboard&n
 - 글 상세 페이지에서 작성자 클릭 시 해당 유저 프로필로 이동
 - 글 좋아요 가능
 - 게시글 이미지 수정, 삭제 시 해당 이미지 서버에서 삭제
+- 태그 클릭 시 해당 태그가 있는 게시글 검색
 
 #### 댓글
 - 댓글 작성, 읽기, 수정, 삭제(CRUD)
