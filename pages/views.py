@@ -23,6 +23,7 @@ def home(request):
 
 
 def search(request):
+    # print(request.GET.get("search"))
     search = request.GET.get("search")
     page = request.GET.get('page', '1')
     sort_option = request.GET.get('sort')
@@ -30,8 +31,9 @@ def search(request):
         products = Product.objects.filter(
             Q(title__icontains=search) | 
             Q(content__icontains=search) |
-            Q(user__nickname__icontains=search)
-            ).order_by("-pk")
+            Q(user__nickname__icontains=search) |
+            Q(tags__tag__icontains=search)
+            ).distinct().order_by("-pk")
         if sort_option == 'views':
             products.order_by("-views")
         elif sort_option == 'likes':

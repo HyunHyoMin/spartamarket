@@ -13,7 +13,17 @@
     <h3>상품 등록</h3>
 <form action="{% url 'products:create' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
+    <label for="title">제목</label>
+    <input type="text" class="form-control" pagesize="  150" name="title" id="title">
+
+    <label for="content">내용</lable>
+    <textarea class="form-control" namge="content" name="content" id="content"></textarea>
+
+    <label for="hashtag">태그</label>
+    <input type="text" class="form-control" name="hashtag" id="hashtag">
+
+    <label for="image">상품 이미지</label>
+    <input type="file" class="form-control" name="image" id="image">
         <button type="submit" class="btn btn-dark">작성</button>
 </form>
 </div>

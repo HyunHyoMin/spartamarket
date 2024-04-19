@@ -13,7 +13,7 @@ def create(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(request.user)
-            for i in product.content.split():
+            for i in request.POST["hashtag"].split():
                 if i.startswith('#'):
                     tag, _ = Hashtag.objects.get_or_create(tag=i)
                     product.tags.add(tag)
@@ -29,9 +29,11 @@ def detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     product.views += 1
     product.save()
+    tags = product.tags.all()
     comments = product.comment_set.all().order_by("-pk")
     context = {
         'product' : product,
+        'tags' : tags,
         'comments' : comments,
     }
     return render(request, "products/detail.html", context)

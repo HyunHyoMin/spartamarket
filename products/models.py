@@ -24,7 +24,7 @@ class Product(CommonInfo):
     image = models.ImageField(upload_to="images/", blank=True)
     views = models.IntegerField(default=0)
     like_users = models.ManyToManyField(User, related_name="like_products")
-    tags = models.ManyToManyField(Hashtag, blank=True)
+    tags = models.ManyToManyField(Hashtag, blank=True, related_name="tags")
 
     def __str__(self):
         return self.title
