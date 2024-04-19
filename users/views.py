@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
+from products.models import Product
 from .forms import ProfileForm
 from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
@@ -62,3 +63,15 @@ def following(request, member_username):
     member = get_object_or_404(User, username=member_username)
     context = {'member' : member}
     return render(request, "users/following.html", context)
+
+
+@login_required
+@require_http_methods(["GET"])
+def my_product(request, username):
+    user = get_object_or_404(User, username=username)
+    products = Product.objects.filter(user=user)
+    context = {
+        'user' : user,
+        'products' : products
+        }
+    return render(request, "users/my_product.html", context)
