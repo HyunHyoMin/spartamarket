@@ -7,9 +7,9 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ('title', 'content', 'image')
         labels = {
-            'title' : "",
-            'content' : "",
-            'image' : '상품 이미지'
+            'title' : "제목",
+            'content' : "내용",
+            'image' : '이미지'
         }
         
     def save(self, user):

@@ -51,16 +51,18 @@ def update(request, pk):
             if form.is_valid():
                 product = form.save(request.user)
                 product.tags.clear()
-                for i in product.content.split():
+                for i in request.POST["hashtag"].split():
                     if i.startswith('#'):
                         tag, _ = Hashtag.objects.get_or_create(tag=i)
                         product.tags.add(tag)
                 return redirect("products:detail", product.pk)
         else:
             form = ProductForm(instance=product)
+            tags = product.tags.all()
         context = {
             'form' : form,
-            'product' : product
+            'product' : product,
+            'tags' : tags
             }
     else:
         return redirect('home')
