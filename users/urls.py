@@ -9,4 +9,5 @@ urlpatterns = [
     path('<int:member_pk>/follow', views.follow, name="follow"),
     path('<str:member_username>/follower', views.follower, name="follower"),
     path('<str:member_username>/following', views.following, name="following"),
+    path('<str:username>/my_product', views.my_product, name="my_product"),
 ]

@@ -34,7 +34,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{% url 'users:profile' request.user.username %}">프로필</a></li>
-                                <li><a class="dropdown-item" href="#">내 등록 상품</a></li>
+                                <li><a class="dropdown-item" href="{% url 'users:my_product' request.user.username %}">내 등록 상품</a></li>
 
                             </ul>
                         </li>
