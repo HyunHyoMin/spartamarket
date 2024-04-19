@@ -6,15 +6,19 @@
 <div class="mb-3 select container">
 <form action="{% url 'products:update' product.pk %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <label for="title">제목</label>
-    <input type="text" name="title" id="title" value="{{ form.title.value }}">
+    
+    {% for filed in form %}
+    <div class="form-group">
+    <label for="{{ filed.name }}">{{ filed.label }}</label>
+    {{ filed }}
+    {% endfor %}
     <br>
-    <label for="content">내용</label>
-    <textarea class="form-control" name="content" id="content">{{ form.content.value }}</textarea>
-    <input type="file" class="form-control" name="image" id="image">
-    <br>
-    <button type="submit" class="btn btn-dark">작성</button>
+        <label for="hashtag">태그</label>
+        <input type="text" class="form-control" name="hashtag" id="hashtag" value="{% for tag in tags %} {{tag}} {% endfor %}">
+
+        <button type="submit" class="btn btn-dark">작성</button>
 </form>
+</div>
 </div>
 
 {% endblock content %}
