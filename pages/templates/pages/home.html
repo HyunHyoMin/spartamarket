@@ -35,8 +35,10 @@
                             </p>
                             <div class="d-flex justify-body-between align-items-center">
 
-                                <small class="text-muted">{{ product.created_at }}</small>
-                                <small class="text-muted">{{ product.user.nickname }}</small>
+                                <div class="card-body">
+                                <small class="text-muted">작성시간:{{ product.created_at }}</small>
+                                <small class="text-muted right">작성자:{{ product.user.nickname }}</small>
+                                </div>
                             </div>
                         </div>
                     </a>
