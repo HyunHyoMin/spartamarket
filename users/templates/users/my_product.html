@@ -6,8 +6,8 @@
 <h3>{{ user.nickname }}의 상품</h3>
 
 <ol>
-    {% for product in products. %} 
-    <li><a href="{% url 'product:detail' product.pk %}">{{ product.title }}</a></li>
+    {% for product in products %} 
+    <li><a href="{% url 'products:detail' product.pk %}">{{ product.title }}</a></li>
     {% endfor %}
 </ol>
 
