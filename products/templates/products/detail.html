@@ -31,7 +31,9 @@
             </p>
 
             <p>{{ product.content }}</p>
-            <p>태그 : {% for tag in tags%} {{ tag }} {% endfor %}</p>
+            <form action="{% url 'pages:search' %}">
+            <p>태그 : {% for tag in tags %} <a class="page-link" href="{% url 'pages:search' %}?search={{ tag|urlencode }}">{{ tag }}</a>{% endfor %}</p>
+            </form>
             {% if product.user == request.user %}
             <p><a href="{% url 'products:update' product.pk %}"><button>수정</button></a>
 

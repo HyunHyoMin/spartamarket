@@ -23,6 +23,7 @@ def home(request):
 
 
 def search(request):
+    # print(request.GET.get("search"))
     search = request.GET.get("search")
     page = request.GET.get('page', '1')
     sort_option = request.GET.get('sort')
