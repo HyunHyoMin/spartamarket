@@ -1,6 +1,5 @@
 from django.contrib.auth.password_validation import UserAttributeSimilarityValidator
 from django.core.exceptions import ValidationError, FieldDoesNotExist
-from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import exceeds_maximum_length_ratio
 from difflib import SequenceMatcher
 import re
@@ -34,7 +33,7 @@ class CustomUserAttributeSimilarityValidator(UserAttributeSimilarityValidator):
                         except FieldDoesNotExist:
                             verbose_name = attribute_name
                         raise ValidationError(
-                            _("비밀번호가 ID와 유사합니다."),
+                            ("비밀번호가 ID와 유사합니다."),
                             code="password_too_similar",
                             params={"verbose_name": verbose_name},
                         )

@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UsernameField
+from django.contrib.auth import password_validation
 from django import forms
 
 
@@ -10,6 +11,7 @@ class CustomUserCreationForm(UserCreationForm):
         label=("Password"),
         strip=False,
         widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        help_text=password_validation.password_validators_help_text_html(),
     )
     password2 = forms.CharField(
         label=("Password 재입력"),
@@ -21,15 +23,18 @@ class CustomUserCreationForm(UserCreationForm):
         model = get_user_model()
         fields = ("username", "nickname")
 
+
 class CustomUsernameField(UsernameField):
     default_error_messages = {
         "required": ("ID를 입력하세요."),
     }
 
+
 class CustomCharField(forms.CharField):
     default_error_messages = {
         "required": ("Password를 입력하세요."),
     }
+
 
 class LoginForm(AuthenticationForm):
     username = CustomUsernameField(widget=forms.TextInput(attrs={"autofocus": True}), label='ID')
