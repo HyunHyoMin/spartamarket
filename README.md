@@ -9,6 +9,8 @@
 ERD : 
 [SpartaMarket_ERD.pdf](https://github.com/HyunHyoMin/spartamarket/files/15020078/SpartaMarket_ERD.pdf)
 
+와이어프레임 :
+https://www.figma.com/file/f9G4a2rXgttRbnq2xlfm33/spartamarket?type=whiteboard&node-id=0-1&t=YIBSd7VS5PKrXscq-0
 
 
 ## 🕰️ 개발 기간
