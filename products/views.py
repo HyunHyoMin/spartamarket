@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Product, Comment
+from .models import Product, Comment, Hashtag
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 from django.core.files.storage import default_storage
 from .forms import ProductForm
+
 
 @login_required
 @require_http_methods(["GET", "POST"])
@@ -12,7 +13,11 @@ def create(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             product = form.save(request.user)
-        return redirect("products:detail", product.pk)
+            for i in product.content.split():
+                if i.startswith('#'):
+                    tag, _ = Hashtag.objects.get_or_create(tag=i)
+                    product.tags.add(tag)
+            return redirect("products:detail", product.pk)
     else:
         form = ProductForm
     context = {'form' : form}
@@ -22,6 +27,8 @@ def create(request):
 @require_http_methods(["GET", "POST"])
 def detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
+    product.views += 1
+    product.save()
     comments = product.comment_set.all().order_by("-pk")
     context = {
         'product' : product,
@@ -41,7 +48,12 @@ def update(request, pk):
             form = ProductForm(request.POST, request.FILES, instance=product)
             if form.is_valid():
                 product = form.save(request.user)
-            return redirect("products:detail", product.pk)
+                product.tags.clear()
+                for i in product.content.split():
+                    if i.startswith('#'):
+                        tag, _ = Hashtag.objects.get_or_create(tag=i)
+                        product.tags.add(tag)
+                return redirect("products:detail", product.pk)
         else:
             form = ProductForm(instance=product)
         context = {

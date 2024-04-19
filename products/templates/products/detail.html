@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
-
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock head%}
 
 {% block content %}
 <main class="container">
@@ -15,9 +18,10 @@
     <div class="row g-5">
         <div class="col-md-8">
             <p class="blog-post-meta"><a href="{% url 'users:profile' product.user.username %}">{{ product.user.nickname }}</a> | {{ product.created_at }}</p>
-
+        <div class="inline-block">
             <h2 class="display-5 link-body-emphasis mb-1"> {{ product.title }} </h2>
-
+                조회수 : {{ product.views }}
+        </div>
 
             <hr>
             <p>
