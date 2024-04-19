@@ -30,8 +30,9 @@ def search(request):
         products = Product.objects.filter(
             Q(title__icontains=search) | 
             Q(content__icontains=search) |
-            Q(user__nickname__icontains=search)
-            ).order_by("-pk")
+            Q(user__nickname__icontains=search) |
+            Q(tags__tag__icontains=search)
+            ).distinct().order_by("-pk")
         if sort_option == 'views':
             products.order_by("-views")
         elif sort_option == 'likes':
