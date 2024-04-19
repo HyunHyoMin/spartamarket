@@ -57,7 +57,10 @@ https://www.figma.com/file/f9G4a2rXgttRbnq2xlfm33/spartamarket?type=whiteboard&n
 - 글 좋아요 가능
 - 게시글 이미지 수정, 삭제 시 해당 이미지 서버에서 삭제
 - 태그 클릭 시 해당 태그가 있는 게시글 검색
-
+- 
+#### 해시태그 
+ - #으로 시작하게 작성 공백을 기준으로 나눠짐, ex) #tag1 #tag2
+ - 
 #### 댓글
 - 댓글 작성, 읽기, 수정, 삭제(CRUD)
 - 댓글 작성 시 작성한 user의 닉네임, 제목, 내용, 작성한 날짜와 시간 표시
